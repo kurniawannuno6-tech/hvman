@@ -37,7 +37,7 @@ export default function Gallery() {
   return (
     <div className="page-enter" style={{ background: "#f0ead6", minHeight: "100vh" }}>
       <div style={{ background: "#1a5c2a", padding: "48px 20px 40px", textAlign: "center" }}>
-        <span className="font-marker" style={{ color: "rgba(240,234,214,.6)", fontSize: "1rem" }}>Cody's Moments</span>
+        <span className="font-marker" style={{ color: "rgba(240,234,214,.6)", fontSize: "1rem" }}>HVMAN's Moments</span>
         <h1 className="font-display" style={{ color: "#f0ead6", fontSize: "clamp(3rem,10vw,7rem)", lineHeight: .9, marginTop: 4 }}>GALLERY</h1>
       </div>
       <div className="checker-strip" />

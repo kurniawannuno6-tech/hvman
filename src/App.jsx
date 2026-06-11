@@ -18,10 +18,14 @@ export default function App() {
   const navigate = useCallback((p) => {
     if (transitioning || p === page) return;
     setTransitioning(true);
+    document.body.style.overflow = "hidden"; // lock scroll during page transition
+    document.documentElement.style.overflow = "hidden";
 
     const tl = gsap.timeline({
       onComplete: () => {
         setTransitioning(false);
+        document.body.style.overflow = ""; // restore scroll when transition completes
+        document.documentElement.style.overflow = "";
       }
     });
 
@@ -57,7 +61,9 @@ export default function App() {
       // Fade in main site layout on load complete
       gsap.fromTo(".app-content-wrapper", 
         { opacity: 0, y: 15 }, 
-        { opacity: 1, y: 0, duration: 0.6, ease: "power2.out", delay: 0.1 }
+        { opacity: 1, y: 0, duration: 0.6, ease: "power2.out", delay: 0.1, onComplete: () => {
+          gsap.set(".app-content-wrapper", { clearProps: "transform" });
+        }}
       );
     }
   }, [loaded]);
@@ -84,7 +90,7 @@ export default function App() {
       
       {/* Primary Site Content Container */}
       <div className="app-content-wrapper" style={{ opacity: loaded ? 1 : 0 }}>
-        <Nav current={page} navigate={navigate} />
+        <Nav current={page} navigate={navigate} transitioning={transitioning} />
         {renderPage()}
         <Footer navigate={navigate} />
       </div>
@@ -96,8 +102,8 @@ export default function App() {
           position: "fixed",
           top: 0,
           left: 0,
-          width: "100vw",
-          height: "100vh",
+          right: 0,
+          bottom: 0,
           background: "#1a5c2a",
           zIndex: 9999, // sits above nav (zIndex 200) and site content
           transform: "translateY(-100%)", // sits above viewport initially
@@ -111,11 +117,17 @@ export default function App() {
       >
         <div className="checker-strip-cream" style={{ position: "absolute", top: 0 }} />
         
-        <div style={{ display: "flex", flexDirection: "column", alignItems: "center", gap: 16 }}>
+        <div style={{ display: "flex", flexDirection: "column", alignItems: "center", gap: 16, width: "100%" }}>
           <img 
             src="/images/hvman-logo.png" 
             alt="HVMAN logo" 
-            style={{ height: "110px", width: "auto", objectFit: "contain" }} 
+            style={{ 
+              maxHeight: "110px", 
+              maxWidth: "85%", 
+              width: "auto", 
+              height: "auto", 
+              objectFit: "contain" 
+            }} 
           />
         </div>
 

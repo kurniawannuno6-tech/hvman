@@ -41,7 +41,7 @@ export default function Contact({ navigate }) {
       <div className="checker-strip" />
 
       <div style={{ maxWidth: 860, margin: "0 auto", padding: "48px 20px 64px" }}>
-        <div style={{ display: "grid", gridTemplateColumns: "repeat(auto-fit, minmax(320px, 1fr))", gap: 32 }}>
+        <div style={{ display: "grid", gridTemplateColumns: "repeat(auto-fit, minmax(min(100%, 320px), 1fr))", gap: 32 }}>
           {/* contact form */}
           <div className="section-reveal" style={{ border: "2px solid #1a5c2a", borderRadius: 16, padding: 28, background: "#f8f5ea" }}>
             <h2 className="font-display" style={{ color: "#1a5c2a", fontSize: "1.8rem", letterSpacing: "0.06em", marginBottom: 20 }}>SEND A MESSAGE</h2>

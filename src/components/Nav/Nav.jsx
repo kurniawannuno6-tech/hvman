@@ -3,7 +3,7 @@ import gsap from "gsap";
 
 export const NAV_ITEMS = ["HOME", "MENU", "GALLERY", "LOCATION", "CONTACT"];
 
-export default function Nav({ current, navigate }) {
+export default function Nav({ current, navigate, transitioning }) {
   const [open, setOpen] = useState(false);
   const overlayRef = useRef(null);
 
@@ -17,6 +17,8 @@ export default function Nav({ current, navigate }) {
     const el = overlayRef.current;
     if (!el) return;
     if (open) {
+      document.body.style.overflow = "hidden";
+      document.documentElement.style.overflow = "hidden";
       el.style.display = "flex";
       gsap.fromTo(el, { opacity: 0 }, { opacity: 1, duration: 0.3, ease: "power2.out" });
       const links = el.querySelectorAll(".mobile-nav-link");
@@ -26,6 +28,10 @@ export default function Nav({ current, navigate }) {
         { y: 0, opacity: 1, duration: 0.4, stagger: 0.07, ease: "back.out(1.6)", delay: 0.1 }
       );
     } else {
+      if (!transitioning) {
+        document.body.style.overflow = "";
+        document.documentElement.style.overflow = "";
+      }
       gsap.to(el, {
         opacity: 0,
         duration: 0.25,
@@ -34,7 +40,13 @@ export default function Nav({ current, navigate }) {
         },
       });
     }
-  }, [open]);
+    return () => {
+      if (!transitioning) {
+        document.body.style.overflow = "";
+        document.documentElement.style.overflow = "";
+      }
+    };
+  }, [open, transitioning]);
 
   return (
     <>

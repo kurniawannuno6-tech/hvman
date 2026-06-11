@@ -58,7 +58,7 @@ export default function Home({ navigate }) {
               
               {/* Mascot Container: Sits absolutely to the left of the logo on desktop, stacks on mobile. */}
               <div className="hero-mascot-wrapper hero-mascot">
-                <CupMascot size="clamp(100px, 18vw, 50px)" character="01" />
+                <CupMascot size="clamp(50px, 18vw, 100px)" character="01" />
               </div>
 
               {/* Logo: Centered mathematically in the middle of the screen. */}
@@ -66,7 +66,7 @@ export default function Home({ navigate }) {
                 id="hero-title" 
                 src="/images/hvman-logo.png" 
                 alt="HVMAN Logo" 
-                style={{ height: "clamp(50px, 20vw, 100px)", width: "auto", objectFit: "contain" }} 
+                style={{ height: "clamp(50px, 20vw, 100px)", width: "auto", objectFit: "contain", maxWidth: "100%" }} 
               />
 
             </div>
