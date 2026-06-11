@@ -73,7 +73,7 @@ export default function Home({ navigate }) {
           </div>
           <div style={{ display: "flex", justifyContent: "space-between", maxWidth: 360, margin: "8px auto 0", padding: "0 12px" }}>
             <span className="font-body" style={{ color: "#f0ead6", opacity: .6, fontSize: ".72rem", letterSpacing: ".2em" }}>MAGELANG</span>
-            <span className="font-body" style={{ color: "#f0ead6", opacity: .6, fontSize: ".72rem", letterSpacing: ".2em" }}>EST. 2019</span>
+            <span className="font-body" style={{ color: "#f0ead6", opacity: .6, fontSize: ".72rem", letterSpacing: ".2em" }}>EST. 2xxx</span>
           </div>
         </div>
       </section>

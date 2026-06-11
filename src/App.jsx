@@ -1,4 +1,4 @@
-import React, { useState, useCallback, useEffect } from "react";
+import React, { useState, useCallback, useEffect, useRef } from "react";
 import Nav from "./components/Nav/Nav";
 import Footer from "./components/Footer/Footer";
 import Home from "./pages/Home/Home";
@@ -12,11 +12,45 @@ import gsap from "gsap";
 export default function App() {
   const [loaded, setLoaded] = useState(false);
   const [page, setPage] = useState("HOME");
+  const [transitioning, setTransitioning] = useState(false);
+  const curtainRef = useRef(null);
 
   const navigate = useCallback((p) => {
-    setPage(p);
-    window.scrollTo({ top: 0, behavior: "smooth" });
-  }, []);
+    if (transitioning || p === page) return;
+    setTransitioning(true);
+
+    const tl = gsap.timeline({
+      onComplete: () => {
+        setTransitioning(false);
+      }
+    });
+
+    // 1. Slide curtain down to cover viewport
+    tl.to(curtainRef.current, {
+      y: "0%",
+      duration: 0.45,
+      ease: "power3.inOut"
+    });
+
+    // 2. Change page and scroll to top instantly
+    tl.add(() => {
+      setPage(p);
+      window.scrollTo({ top: 0, behavior: "instant" });
+    });
+
+    // 3. Slide curtain down and out
+    tl.to(curtainRef.current, {
+      y: "100%",
+      duration: 0.45,
+      ease: "power3.inOut"
+    });
+
+    // 4. Reset curtain position to top instantly
+    tl.set(curtainRef.current, {
+      y: "-100%"
+    });
+
+  }, [page, transitioning]);
 
   useEffect(() => {
     if (loaded) {
@@ -53,6 +87,39 @@ export default function App() {
         <Nav current={page} navigate={navigate} />
         {renderPage()}
         <Footer navigate={navigate} />
+      </div>
+
+      {/* Page Transition Curtain Sweep Overlay */}
+      <div 
+        ref={curtainRef}
+        style={{
+          position: "fixed",
+          top: 0,
+          left: 0,
+          width: "100vw",
+          height: "100vh",
+          background: "#1a5c2a",
+          zIndex: 9999, // sits above nav (zIndex 200) and site content
+          transform: "translateY(-100%)", // sits above viewport initially
+          display: "flex",
+          flexDirection: "column",
+          alignItems: "center",
+          justifyContent: "center",
+          overflow: "hidden",
+          pointerEvents: "auto"
+        }}
+      >
+        <div className="checker-strip-cream" style={{ position: "absolute", top: 0 }} />
+        
+        <div style={{ display: "flex", flexDirection: "column", alignItems: "center", gap: 16 }}>
+          <img 
+            src="/images/hvman-logo.png" 
+            alt="HVMAN logo" 
+            style={{ height: "110px", width: "auto", objectFit: "contain" }} 
+          />
+        </div>
+
+        <div className="checker-strip-cream" style={{ position: "absolute", bottom: 0 }} />
       </div>
     </div>
   );
